@@ -1,0 +1,2 @@
+F:/zone master/code of ZM shared pre/android/app/.cxx/Debug/2u6r3l5l/armeabi-v7a/CMakeFiles/edit_cache.dir
+F:/zone master/code of ZM shared pre/android/app/.cxx/Debug/2u6r3l5l/armeabi-v7a/CMakeFiles/rebuild_cache.dir

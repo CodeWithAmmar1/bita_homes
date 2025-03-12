@@ -1,0 +1,2 @@
+E:/flutter/zone master/bitahomesupdated/android/app/.cxx/RelWithDebInfo/6b1k545w/x86_64/CMakeFiles/edit_cache.dir
+E:/flutter/zone master/bitahomesupdated/android/app/.cxx/RelWithDebInfo/6b1k545w/x86_64/CMakeFiles/rebuild_cache.dir

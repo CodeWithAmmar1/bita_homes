@@ -1,0 +1,78 @@
+Flutter crash report.
+Please report a bug at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter debug_adapter
+
+## exception
+
+FileSystemException: FileSystemException: writeFrom failed, path = '' (OS Error: The pipe is being closed.
+, errno = 232)
+
+```
+#0      _checkForErrorResponse (dart:io/common.dart:55:9)
+#1      _RandomAccessFile.writeFrom.<anonymous closure> (dart:io/file_impl.dart:885:7)
+#2      _rootRunUnary (dart:async/zone.dart:1407:47)
+<asynchronous suspension>
+#3      _FileStreamConsumer.addStream.<anonymous closure>.<anonymous closure>.<anonymous closure> (dart:io/file_impl.dart:218:21)
+<asynchronous suspension>
+```
+
+## flutter doctor
+
+```
+[✓] Flutter (Channel stable, 3.24.3, on Microsoft Windows [Version 10.0.19045.5440], locale en-US)
+    • Flutter version 3.24.3 on channel stable at C:\Users\Hp probook  450\Downloads\flutter
+    • Upstream repository https://github.com/flutter/flutter.git
+    • Framework revision 2663184aa7 (5 months ago), 2024-09-11 16:27:48 -0500
+    • Engine revision 36335019a8
+    • Dart version 3.5.3
+    • DevTools version 2.37.3
+
+[✓] Windows Version (Installed version of Windows is version 10 or higher)
+
+[!] Android toolchain - develop for Android devices (Android SDK version 35.0.0)
+    • Android SDK at C:\Users\Hp probook  450\AppData\Local\Android\sdk
+    • Platform android-35, build-tools 35.0.0
+    • Java binary at: C:\Program Files\Android\Android Studio\jbr\bin\java
+    • Java version OpenJDK Runtime Environment (build 17.0.10+0--11609105)
+    ✗ Android license status unknown.
+      Run `flutter doctor --android-licenses` to accept the SDK licenses.
+      See https://flutter.dev/to/windows-android-setup for more details.
+
+[✓] Chrome - develop for the web
+    • Chrome at C:\Program Files\Google\Chrome\Application\chrome.exe
+
+[!] Visual Studio - develop Windows apps (Visual Studio Community 2022 17.10.3)
+    • Visual Studio at E:\vs studio
+    • Visual Studio Community 2022 version 17.10.35013.160
+    ✗ Visual Studio is missing necessary components. Please re-run the Visual Studio installer for the "Desktop development with C++" workload, and include these components:
+        MSVC v142 - VS 2019 C++ x64/x86 build tools
+         - If there are multiple build tool versions available, install the latest
+        C++ CMake tools for Windows
+        Windows 10 SDK
+
+[✓] Android Studio (version 2024.1)
+    • Android Studio at C:\Program Files\Android\Android Studio
+    • Flutter plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/9212-flutter
+    • Dart plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/6351-dart
+    • Java version OpenJDK Runtime Environment (build 17.0.10+0--11609105)
+
+[✓] VS Code (version 1.97.0)
+    • VS Code at C:\Users\Hp probook  450\AppData\Local\Programs\Microsoft VS Code
+    • Flutter extension version 3.104.0
+
+[✓] Connected device (4 available)
+    • RMX1925 (mobile)  • d6a8c293 • android-arm64  • Android 10 (API 29)
+    • Windows (desktop) • windows  • windows-x64    • Microsoft Windows [Version 10.0.19045.5440]
+    • Chrome (web)      • chrome   • web-javascript • Google Chrome 132.0.6834.196
+    • Edge (web)        • edge     • web-javascript • Microsoft Edge 132.0.2957.140
+
+[✓] Network resources
+    • All expected network resources are available.
+
+! Doctor found issues in 2 categories.
+```

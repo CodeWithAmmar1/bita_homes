@@ -1,0 +1,70 @@
+import 'package:get/get.dart';
+
+class MyTranslations extends Translations {
+  @override
+  Map<String, Map<String, String>> get keys => {
+        // English Translations
+        'en_US': {
+          'home': 'Home',
+          'device': 'Device',
+          'add_devices': 'Add Devices',
+          'me': 'Me',
+          'dashboard_item_opacity': 'Dashboard Item Opacity',
+          'device_item_opacity': 'Device Item Opacity',
+          'season_select': 'Season Select',
+          'summer': 'Summer',
+          'winter': 'Winter',
+          'on': 'On',
+          'off': 'Off',
+          'set_point': 'Set Point',
+          'supply_cfm': 'Supply CFM',
+          'signout': 'Sign Out',
+          'value': 'Value',
+          'set_temperature': 'Set Temperature',
+          'delete_device_prompt':
+              'Are you sure you want to delete this device?',
+          'cancel': 'Cancel',
+          'delete': 'Delete',
+          'delete_device': 'Delete Device',
+          "Schedule": "Schedule",
+          "CFM": "CFM",
+          "Mode": "Mode",
+          "Season": "Season",
+          "Switch": "Switch",
+          "Room Temp.": "Room Temp.",
+          "Enter Password": "Enter Password",
+          "Submit": "Submit"
+        },
+        'ar': {
+          'home': 'الرئيسية',
+          'device': 'جهاز',
+          'add_devices': 'إضافة أجهزة',
+          'me': 'الإعدادات',
+          'device_list': 'قائمة الأجهزة',
+          'dashboard_item_opacity': 'شفافية عنصر لوحة القيادة',
+          'device_item_opacity': 'شفافية عنصر الجهاز',
+          'season_select': 'اختيار الموسم',
+          'summer': 'صيف',
+          'winter': 'شتاء',
+          'on': 'تشغيل',
+          'off': 'إيقاف',
+          'set_point': 'نقطة الضبط',
+          'supply_cfm': 'تدفق الهواء (CFM)',
+          'signout': 'تسجيل الخروج',
+          'value': 'القيمة',
+          'set_temperature': 'ضبط درجة الحرارة',
+          'delete_device_prompt': 'هل أنت متأكد أنك تريد حذف هذا الجهاز؟',
+          'cancel': 'إلغاء',
+          'delete': 'حذف',
+          'delete_device': 'حذف الجهاز',
+          "Schedule": "الجدول",
+          "CFM": "CFM",
+          "Mode": "الوضع",
+          "Season": "الموسم",
+          "Switch": "مفتاح",
+          "Room Temp.": "درجة حرارة الغرفة",
+          "Enter Password": "أدخل كلمة المرور",
+          "Submit": "إرسال"
+        },
+      };
+}
