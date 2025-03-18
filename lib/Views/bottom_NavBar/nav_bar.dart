@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:testappbita/Views/device_screen/device_screen.dart';
 import 'package:testappbita/Views/setting_screen/settings_screen.dart';
-import 'package:testappbita/Views/zone_master/Device/device.dart';
+import 'package:testappbita/Views/Device/device.dart';
 import 'package:testappbita/controller/nav_bar_controller/nav_bar_controller.dart';
 import 'package:testappbita/utils/theme/theme_controller.dart';
 
@@ -83,24 +84,3 @@ class NavBar extends StatelessWidget {
   }
 }
 
-
-class DevicesScreen extends StatefulWidget {
-  const DevicesScreen({super.key});
-
-  @override
-  State<DevicesScreen> createState() => _DevicesScreenState();
-}
-
-class _DevicesScreenState extends State<DevicesScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Devices'),
-      ),
-      body: Center(
-        child: Text('Devices Screen'),
-      ),
-    );
-  }
-}

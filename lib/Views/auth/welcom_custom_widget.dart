@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class RoundRectangleButton extends StatelessWidget {
   final String text;
@@ -8,7 +7,7 @@ class RoundRectangleButton extends StatelessWidget {
   final Color color; 
   final double size;
 
-  const RoundRectangleButton({required this.text, required this.onTap, required this.color, required this.size});
+  const RoundRectangleButton({super.key, required this.text, required this.onTap, required this.color, required this.size});
 
 
   @override

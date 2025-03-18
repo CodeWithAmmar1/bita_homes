@@ -1,131 +1,155 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:testappbita/Views/zone_master/pannel/custom_bottom_Cfm.dart';
-import 'package:testappbita/Views/zone_master/theme/theme.dart';
+import 'package:testappbita/Views/pannel/custom_bottom_Cfm.dart';
+import 'package:testappbita/utils/theme/theme.dart';
 import 'package:testappbita/services/firebase_service.dart';
+
 
 class MqttController extends GetxController {
   RxString topicSSIDvalue = "".obs;
-  var isSummer = false.obs;
-  var deviceTopic = "".obs;
-  var selectedDateTime = DateTime.now().obs;
-  var isOn = true.obs;
-  var currentValue = 50.0.obs;
-  var temperature = 30.0.obs;
-  var isThermostatContainerVisible = false.obs;
-  var isCalendarVisible = true.obs;
-  var thermostatTemperature = 20.0.obs;
-  var mqttBroker = "192.168.18.112".obs;
-  var clientId = "".obs;
-  var port = 1883.obs;
-  var receivedMessage = "".obs;
-  var lastDamperValue = 24.0.obs;
-  var packetId = 0.obs;
-  var isConnected = false.obs;
-  var message = "".obs;
+  RxBool isSummer = false.obs;
+  // RxString deviceTopic = "".obs;
+  Rx<DateTime> selectedDateTime = DateTime.now().obs;
+  RxBool isOn = false.obs;
+  RxDouble currentValue = 50.0.obs;
+  RxDouble temperature = 30.0.obs;
+  RxBool isThermostatContainerVisible = false.obs;
+  RxBool isCalendarVisible = true.obs;
+  RxDouble thermostatTemperature = 20.0.obs;
+  RxString mqttBroker = 'a31qubhv0f0qec-ats.iot.eu-north-1.amazonaws.com'.obs;
+  RxString clientId = "".obs;
+  RxInt port = 8883.obs;
+  RxString receivedMessage = "".obs;
+  RxDouble lastDamperValue = 24.0.obs;
+  RxInt packetId = 0.obs;
+  RxBool isConnected = false.obs;
+  RxString message = "".obs;
+  
+  RxString correctPassword = "1234567".obs;
+  RxBool isPasswordCorrect = false.obs;
+  RxMap<String, double> deviceTemperatures = <String, double>{}.obs;
+  RxMap<String, String> deviceSwitchStates = <String, String>{}.obs;
 
-  var correctPassword = "1234567".obs;
-  var isPasswordCorrect = false.obs;
-  var deviceTemperatures = <String, double>{}.obs;
-  var deviceSwitchStates = <String, String>{}.obs;
-
-  Timer? lockTimer;
   MqttServerClient? client;
+  Timer? lockTimer;
 
   @override
   void onInit() {
-    log("MQTT controller onit");
+    log("MQTT Controller Initialized");
     super.onInit();
+    fetchClientId();
     _setupMqttClient();
     _connectMqtt();
-    fetchClientId();
   }
 
-  fetchClientId() {
+  void fetchClientId() {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       clientId.value = user.uid;
     }
   }
 
-  updatetopicSSIDvalue(value) {
+  void updatetopicSSIDvalue(String value) {
     topicSSIDvalue.value = value;
     update();
   }
 
   void _setupMqttClient() {
-    client = MqttServerClient(mqttBroker.value, clientId.value);
-    client?.port = port.value;
-    client?.logging(on: true);
+    client = MqttServerClient.withPort(mqttBroker.value, clientId.value, port.value);
+    client?.secure = true;
+    client?.keepAlivePeriod = 60;
+    client?.setProtocolV311();
+    client?.logging(on: false);
+    
     client?.onDisconnected = _onDisconnected;
     client?.onConnected = _onConnected;
     client?.onSubscribed = _onSubscribed;
   }
 
-  void _onDisconnected() {
-    log('Disconnected from MQTT broker.');
-    isConnected.value = false;
-  }
+void _onDisconnected() {
+  log("Disconnected from MQTT broker. Reconnecting...");
+  isConnected.value = false;
+  Future.delayed(Duration(seconds: 5), _connectMqtt);
+}
+
 
   void _onConnected() {
-    log('Connected to Onconnect.');
+    log('Connected to MQTT broker.');
     isConnected.value = true;
-
-    client?.subscribe('/KRC/#', MqttQos.atLeastOnce);
+    
+    String topic = '/KRC/#';
+    client?.subscribe(topic, MqttQos.atLeastOnce);
     client?.updates?.listen((List<MqttReceivedMessage<MqttMessage>>? messages) {
-      final MqttPublishMessage msg = messages![0].payload as MqttPublishMessage;
-      log('subscribe_____/KRC/$topicSSIDvalue');
-      final String topic = messages[0].topic;
-      final String message =
-          MqttPublishPayload.bytesToStringAsString(msg.payload.message);
-      log(topic);
-      log("message1");
-      receivedMessage.value = message;
+      if (messages == null || messages.isEmpty) return;
 
-      if (topicSSIDvalue != "") {
-        log('topicSSIDvalue != ""');
-        if (topic == "/KRC/$topicSSIDvalue") {
-          log('Message Received on /KRC/$topicSSIDvalue: $message');
-          print('Message Received on /KRC/$topicSSIDvalue: $message');
-          _handleMessage(message);
-        }
+      final MqttPublishMessage msg = messages[0].payload as MqttPublishMessage;
+      final String topic = messages[0].topic;
+      final String payload = MqttPublishPayload.bytesToStringAsString(msg.payload.message);
+      
+      log('Message received on topic $topic: $payload');
+      receivedMessage.value = payload;
+
+      if (topicSSIDvalue.value.isNotEmpty && topic == "/KRC/${topicSSIDvalue.value}") {
+        _handleMessage(payload);
       } else {
-        log('topicSSIDvalue == ""');
-        print('Message Received on /KRC/#: $message');
-        _handleMessageDevice(message, topic);
+        _handleMessageDevice(payload, topic);
       }
     });
   }
 
+  void _onSubscribed(String topic) {
+    log('Subscribed to topic: $topic');
+  }
+
   Future<void> _connectMqtt() async {
-    while (true) {
-      try {
-        log('Attempting to connect...');
-        await client?.connect();
-        if (client?.connectionStatus?.state == MqttConnectionState.connected) {
-          log('Connected to MQTT broker.');
-          isConnected.value = true;
-          break;
-        } else {
-          log('Connection failed: ${client?.connectionStatus?.state}');
-        }
-      } catch (e) {
-        log('Exception while connecting: $e');
+    if (client == null) {
+      log("MQTT Client is not initialized!");
+      return;
+    }
+
+    try {
+      log("Loading certificates...");
+      final context = SecurityContext.defaultContext;
+
+      final rootCa = await rootBundle.load('asset/root-CA.crt');
+      final deviceCert = await rootBundle.load('asset/Temperature.cert.pem');
+      final privateKey = await rootBundle.load('asset/Temperature.private.key');
+
+      context.setClientAuthoritiesBytes(rootCa.buffer.asUint8List());
+      context.useCertificateChainBytes(deviceCert.buffer.asUint8List());
+      context.usePrivateKeyBytes(privateKey.buffer.asUint8List());
+
+      client!.securityContext = context;
+      client!.connectionMessage = MqttConnectMessage().withClientIdentifier(clientId.value).startClean();
+
+      log("Connecting to MQTT broker...");
+      await client!.connect();
+
+      if (client!.connectionStatus!.state == MqttConnectionState.connected) {
+        log('Connected to MQTT broker.');
+        isConnected.value = true;
+      } else {
+        log('Connection failed: ${client!.connectionStatus!.state}');
+        client!.disconnect();
       }
-      await Future.delayed(Duration(seconds: 5));
+    } 
+    catch (e) {
+      log('MQTT client exception: $e');
+      client?.disconnect();
     }
   }
 
-  void _onSubscribed(String topic) {
-    print('Subscribed to topic: $topic');
-  }
+
+
 
   void updateTemperature(String topic, double temp) {
     deviceTemperatures[topic] = temp;
@@ -138,7 +162,7 @@ class MqttController extends GetxController {
   }
 
   void _handleMessageDevice(String message, String topics) async {
-   try {
+    try {
       Map<String, dynamic> jsonMap = jsonDecode(message);
       String dmptemp = jsonMap['dmptemp'];
       String ip = jsonMap['ip_address'];
@@ -157,9 +181,10 @@ class MqttController extends GetxController {
       switchtoggle(topicid, dampertsw);
       log("Updated Switch List: $deviceSwitchStates");
       log("Updated Temperature List: $deviceTemperatures");
-      log("here is topic: $deviceTopic");
+      // log("here is topic: $deviceTopic");
       log("State temp: $dmptemp");
-      log("State ip: $ip"); log("State switch: $dampertsw");
+      log("State ip: $ip");
+      log("State switch: $dampertsw");
     } catch (e) {
       log("Error parsing message: $e");
     }
@@ -235,27 +260,27 @@ class MqttController extends GetxController {
     }
   }
 
-
   void publishMessage1(String message, topicssid) {
-     String topic = "/test/$topicssid/1";
-     log(topic.toString());
-     if (client != null) {
-       final builder = MqttClientPayloadBuilder();
-       builder.addString(message);
- 
-       try {
-         client!.publishMessage(
-           topic,
-           MqttQos.atLeastOnce,
-           builder.payload!,
-           retain: true,
-         );
-         print('Message published to $topic: $message');
-       } catch (e) {
-         print('Failed to publish message: $e');
-       }
-     }
-   }
+    String topic = "/test/$topicssid/1";
+    log(topic.toString());
+    if (client != null) {
+      final builder = MqttClientPayloadBuilder();
+      builder.addString(message);
+
+      try {
+        client!.publishMessage(
+          topic,
+          MqttQos.atLeastOnce,
+          builder.payload!,
+          retain: true,
+        );
+        print('Message published to $topic: $message');
+      } catch (e) {
+        print('Failed to publish message: $e');
+      }
+    }
+  }
+
   Future<void> showPasswordDialog(BuildContext context) async {
     TextEditingController passwordController = TextEditingController();
 

@@ -33,7 +33,8 @@ class MyTranslations extends Translations {
           "Switch": "Switch",
           "Room Temp.": "Room Temp.",
           "Enter Password": "Enter Password",
-          "Submit": "Submit"
+          "Submit": "Submit",
+          'device_list': 'Device List',
         },
         'ar': {
           'home': 'الرئيسية',

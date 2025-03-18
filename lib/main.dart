@@ -1,13 +1,8 @@
 
-import 'dart:developer';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
-import 'package:testappbita/Views/auth/welcome_screen.dart';
-
-import 'package:testappbita/Views/bottom_NavBar/nav_bar.dart';
 import 'package:testappbita/Views/splash/splash_Screen.dart';
 import 'package:testappbita/firebase_options.dart';
 import 'package:testappbita/services/localization/localization.dart';
