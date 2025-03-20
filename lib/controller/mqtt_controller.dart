@@ -344,7 +344,7 @@ void _onDisconnected() {
     isCalendarVisible.value = !isCalendarVisible.value;
   }
 
-  void changeDamperValue(double value) {
+  void    changeDamperValue(double value) {
     lastDamperValue.value = value;
     thermostatTemperature.value = value;
   }

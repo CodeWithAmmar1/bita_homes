@@ -159,14 +159,20 @@ class Signin extends StatelessWidget {
             Center(
               child: Column(
                 children: [
-                  RoundRectangleButton(
-                    size: Get.width * 0.88,
-                    text: "LOGIN",
-                    color: Color(0xFF28C38F),
-                    onTap: () {
-                      _authController.signinFun(context);
-                    },
-                  ),
+                    Obx(() {
+        return _authController.isLoading.value
+            ? CircularProgressIndicator(color:  Color(0xFF28C38F),) // Show loading indicator when isLoading is true
+            : RoundRectangleButton(
+                size: Get.width * 0.88,
+                text: "LOGIN",
+                color: Color(0xFF28C38F),
+                onTap: () async {
+                  _authController.isLoading.value = true; // Set loading to true
+                  await _authController.signinFun(context); // Perform login
+                  _authController.isLoading.value = false; // Set loading to false after login
+                },
+              );
+      }),
                   SizedBox(height: 20),
                   Padding(
                     padding:

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:testappbita/utils/theme/theme.dart';
 
 
 class DeviceCard extends StatefulWidget {

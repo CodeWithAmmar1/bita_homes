@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:testappbita/Views/device_screen/custom_widget/device_card.dart';
-import 'package:testappbita/Views/qr_code/qr_code_scanner_page.dart';
 import 'package:testappbita/services/firebase_service.dart';
 import 'package:testappbita/model/user_device_model.dart';
 import 'package:testappbita/utils/theme/theme.dart';

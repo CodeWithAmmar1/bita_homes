@@ -26,12 +26,10 @@ class _DevicesPageState extends State<DevicesPage> {
   List<DeviceModel> allDeviceData = [];
   final OpacityController controller = Get.put(OpacityController());
   final MqttController _mqttcontroller = Get.put(MqttController());
-  // final WeatherController _weatherController=Get.put(WeatherController());
   @override
   void initState() {
     super.initState();
     getTaskListner();
-    _mqttcontroller.onInit();
   }
 
   void getTaskListner() {
@@ -47,13 +45,10 @@ class _DevicesPageState extends State<DevicesPage> {
 
   @override
   Widget build(BuildContext context) {
-// _weatherController.fetchWeather();
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return RefreshIndicator(
       color: ThemeColor().buttonColor,
-      onRefresh: () async {
-        _mqttcontroller.onInit();
-      },
+      onRefresh: () async {},
       child: Scaffold(
         backgroundColor: Get.isDarkMode ? Colors.black : Colors.grey.shade100,
         appBar: AppBar(
@@ -72,7 +67,7 @@ class _DevicesPageState extends State<DevicesPage> {
             CustomIconButton(
                 icon: Icons.notifications,
                 onPressed: () {
-                  _mqttcontroller.onInit();
+                  // _mqttcontroller.onInit();
                 }),
             SizedBox(width: 10),
             CustomIconButton(
@@ -132,15 +127,14 @@ class _DevicesPageState extends State<DevicesPage> {
                                       offset: Offset(2, 3),
                                     ),
                                   ],
-                             
                                 ),
                                 child: InkWell(
                                   onTap: () {
                                     Get.to(() => Pannel(), arguments: {
                                       "name": "${device.deviceName}"
                                     });
-                                    _mqttcontroller
-                                        .updatetopicSSIDvalue(device.deviceId??"");
+                                    _mqttcontroller.updatetopicSSIDvalue(
+                                        device.deviceId ?? "");
                                   },
                                   onLongPress: () {
                                     showDialog(
@@ -200,88 +194,128 @@ class _DevicesPageState extends State<DevicesPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Image.asset(
-                                              "assets/images/device.png",
-                                              width: 40,
-                                              height: 40,
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 5,top: 5),
+                                              child: Container(
+                                                width: 40, // Adjust as needed
+                                                height: 40, // Adjust as needed
+                                                decoration: BoxDecoration(
+                                                  color: Colors.blue
+                                                      .shade100, // Light blue shade
+                                                  shape: BoxShape
+                                                      .circle, // Makes it circular
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.blue, // Light shadow color
+                                                      blurRadius:
+                                                          10, // Soft blur effect
+                                                      spreadRadius: 2,
+                                                    ),
+                                                  ],
+                                                ),
+                                                child: Center(
+                                                  child: Image.asset(
+                                                    "assets/images/damper1.png",
+                                                    width: 35,
+                                                    height: 35,
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                             Obx(
-                                            ()=> GestureDetector(
-                                                onTap: (){
-                                              
-                                               String deviceId =
-                                                            device.deviceId ?? "";
-                                                        if (deviceId.isNotEmpty) {
-                                                          bool newValue = !_mqttcontroller
-                                                                  .deviceSwitchStates
-                                                                  .containsKey(
-                                                                      deviceId) ||
-                                                              _mqttcontroller
-                                                                          .deviceSwitchStates[
-                                                                      deviceId] !=
-                                                                  "1";
-                                                          _mqttcontroller
-                                                                      .deviceSwitchStates[
-                                                                  deviceId] =
-                                                              newValue ? "1" : "0";
-                                                          _mqttcontroller
-                                                              .deviceSwitchStates
-                                                              .refresh();
-                                                
-                                                          // Create and publish JSON payload
-                                                          String message =
-                                                              jsonEncode({
-                                                            "comment":
-                                                                "from Application",
-                                                            "dampertsw": newValue
-                                                                ? "1"
-                                                                : "0",
-                                                          });
-                                                
-                                                          log("switch pressed: $newValue");
-                                                          _mqttcontroller
-                                                              .publishMessage1(
-                                                                  message,
-                                                                  deviceId);
-                                                        }
-                                                  
+                                              () => GestureDetector(
+                                                onTap: () {
+                                                  String deviceId =
+                                                      device.deviceId ?? "";
+                                                  if (deviceId.isNotEmpty) {
+                                                    bool newValue = !_mqttcontroller
+                                                            .deviceSwitchStates
+                                                            .containsKey(
+                                                                deviceId) ||
+                                                        _mqttcontroller
+                                                                    .deviceSwitchStates[
+                                                                deviceId] !=
+                                                            "1";
+                                                    _mqttcontroller
+                                                                .deviceSwitchStates[
+                                                            deviceId] =
+                                                        newValue ? "1" : "0";
+                                                    _mqttcontroller
+                                                        .deviceSwitchStates
+                                                        .refresh();
+
+                                                    // Create and publish JSON payload
+                                                    String message =
+                                                        jsonEncode({
+                                                      "comment":
+                                                          "from Application",
+                                                      "dampertsw":
+                                                          newValue ? "1" : "0",
+                                                    });
+
+                                                    log("switch pressed: $newValue");
+                                                    _mqttcontroller
+                                                        .publishMessage1(
+                                                            message, deviceId);
+                                                  }
                                                 },
                                                 child: Container(
                                                   height: Get.height * 0.05,
                                                   width: Get.width * 0.1,
                                                   decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color:  Colors.grey.withOpacity(0.2)
+                                                      shape: BoxShape.circle,
+                                                      color: Colors.grey
+                                                          .withOpacity(0.2)),
+                                                  child: Container(
+                                                    height: Get.height * 0.02,
+                                                    // width: Get.width * 0.01,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      boxShadow: (_mqttcontroller
+                                                                  .deviceSwitchStates
+                                                                  .containsKey(
+                                                                      device
+                                                                          .deviceId) &&
+                                                              _mqttcontroller
+                                                                          .deviceSwitchStates[
+                                                                      device
+                                                                          .deviceId] ==
+                                                                  "1")
+                                                          ? [
+                                                              BoxShadow(
+                                                                color: const Color
+                                                                        .fromARGB(
+                                                                        255,
+                                                                        10,
+                                                                        238,
+                                                                        18)
+                                                                    .withOpacity(
+                                                                        0.2), // Glow color
+                                                                blurRadius:
+                                                                    6, // Spread of the glow
+                                                                spreadRadius:
+                                                                    1, // Intensity of glow
+                                                              ),
+                                                            ]
+                                                          : [],
+                                                    ),
+                                                    child: Icon(
+                                                      Icons.power_settings_new,
+                                                      size: 20,
+                                                      color: (_mqttcontroller
+                                                                  .deviceSwitchStates
+                                                                  .containsKey(
+                                                                      device
+                                                                          .deviceId) &&
+                                                              _mqttcontroller
+                                                                          .deviceSwitchStates[
+                                                                      device
+                                                                          .deviceId] ==
+                                                                  "1")
+                                                          ? Colors.green
+                                                          : Colors.grey,
+                                                    ),
                                                   ),
-                                                  child:  Container(  height: Get.height * 0.02,
-                                                  // width: Get.width * 0.01,
-  decoration: BoxDecoration(
-    
-    shape: BoxShape.circle,
-    boxShadow: (_mqttcontroller.deviceSwitchStates.containsKey(device.deviceId) &&
-            _mqttcontroller.deviceSwitchStates[device.deviceId] == "1")
-        ? [
-            BoxShadow(
-              color: const Color.fromARGB(255, 10, 238, 18).withOpacity(0.2), // Glow color
-              blurRadius: 6, // Spread of the glow
-              spreadRadius: 1, // Intensity of glow
-            ),
-          ]
-        : [],
-  ),
-  child: Icon(
-    Icons.power_settings_new,
-    size: 20,
-    color: (_mqttcontroller.deviceSwitchStates.containsKey(device.deviceId) &&
-            _mqttcontroller.deviceSwitchStates[device.deviceId] == "1")
-        ? Colors.green
-        : Colors.grey,
-  ),
-),
-
-                                                   
-                                                    
-                                                  
                                                 ),
                                               ),
                                             ),
@@ -317,7 +351,7 @@ class _DevicesPageState extends State<DevicesPage> {
                                                               .isConnected ==
                                                           true
                                                       ? Colors.green
-                                                      :  Colors.red,
+                                                      : Colors.red,
                                                 ),
                                               ),
                                             ],

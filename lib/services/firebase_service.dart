@@ -49,18 +49,18 @@ class FirebaseService {
         'email': email,
         // 'user': user,
       });
+      
+        Get.offAll(() => Signin());
+      
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Registration successful!'),
-          duration: Duration(seconds: 5),
+          duration: Duration(seconds: 2),
           backgroundColor: Colors.green.shade200,
         ),
       );
 
-      Future.delayed(const Duration(seconds: 5), () {
-        Get.offAll(() => Signin());
-      });
     } on FirebaseAuthException catch (e) {
       String errorMessage = 'An error occurred';
       if (e.code == 'email-already-in-use') {

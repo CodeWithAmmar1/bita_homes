@@ -37,24 +37,29 @@ bool showIndicator = true; // Indicator initially dikhayega
 
 
 
-  @override
-  void initState() {
-    Future.delayed(Duration(seconds: 8), () {
+@override
+void initState() {
+  super.initState();
+  _requestPermissions().then((_) {
     setState(() {
-      showIndicator = false; // Indicator remove ho jayega
+      cameraController = MobileScannerController(); // Initialize after permissions
     });
   });
-    super.initState();
-    _requestPermissions();
 
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2), // Adjust speed of the line
-    )..repeat(reverse: true);
+  _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(seconds: 2),
+  )..repeat(reverse: true);
 
-    _animation = Tween<double>(begin: 0, end: 1).animate(_controller);
-  }
+  _animation = Tween<double>(begin: 0, end: 1).animate(_controller);
+}
 
+@override
+void dispose() {
+  _controller.dispose(); // Properly dispose the animation controller
+  cameraController.dispose(); // Dispose the camera controller
+  super.dispose();
+}
   Future<void> _requestPermissions() async {
     await Permission.camera.request();
     await Permission.location.request();
@@ -375,27 +380,28 @@ Future<void> _showdevicenameDialog(String ssid, String password) async {
   ),
   body: Stack(
     children: [
-      ClipRRect(
-        child: isScanning
-            ? MobileScanner(
-                controller: cameraController,
-                onDetect: _onDetect,
-              )
-            : Center(
-                child: isDialogOpen
-                    ? SizedBox.shrink() 
-                    : SizedBox(
-                        width: 60,
-                        height: 60,
-                        child:  showIndicator
-    ? CircularProgressIndicator(
-        strokeWidth: 6,
-        color: Colors.white,
-      )
-    : SizedBox.shrink(),
-                      ),
-              ),
-      ),
+    ClipRRect(
+  child: isScanning
+      ? MobileScanner(
+          controller: cameraController,
+          onDetect: _onDetect,
+        )
+      : Center(
+          child: isDialogOpen
+              ? SizedBox.shrink()
+              : SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: showIndicator
+                      ? CircularProgressIndicator(
+                          strokeWidth: 6,
+                          color: Colors.white,
+                        )
+                      : SizedBox.shrink(),
+                ),
+        ),
+),
+
       if (isScanning)
         Positioned(
           top: 18,

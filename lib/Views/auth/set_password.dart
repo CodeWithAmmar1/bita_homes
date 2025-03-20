@@ -31,7 +31,7 @@ class _SetpasswordState extends State<Setpassword> {
 
   @override
   Widget build(BuildContext context) {
-     var email = Get.arguments['email'];
+    var email = Get.arguments['email'];
     return Scaffold(
       backgroundColor: Get.isDarkMode ? Colors.black : Colors.grey.shade100,
       body: Padding(
@@ -101,16 +101,26 @@ class _SetpasswordState extends State<Setpassword> {
               ),
             const Spacer(),
             Center(
-              child: RoundRectangleButton(
-                size: Get.width * 0.88,
-                text: "REGISTER",
-                color: const Color(0xFF28C38F),
-                onTap: () {
-                  _authController.signupFun(context);
-                  _authController.passwordController.clear();
-                  _authController.confirmPasswordController.clear();
-                },
-              ),
+              child: Obx(() {
+                return _authController.isLoading.value
+                    ? CircularProgressIndicator(
+                        color: Color(
+                            0xFF28C38F)) // Show loading indicator when isLoading is true
+                    : RoundRectangleButton(
+                        size: Get.width * 0.88,
+                        text: "REGISTER",
+                        color: const Color(0xFF28C38F),
+                        onTap: () async {
+                          // Use async
+                          _authController.isLoading.value =
+                              true; // Set loading to true
+                          await _authController.signupFun(
+                              context); // Wait for signup function to complete
+                          _authController.isLoading.value =
+                              false; // Set loading to false after signup
+                        },
+                      );
+              }),
             ),
             const SizedBox(height: 20),
           ],

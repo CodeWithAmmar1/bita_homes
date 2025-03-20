@@ -1,7 +1,5 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:testappbita/Views/auth/signin_screen.dart';
 import 'package:testappbita/Views/auth/signup_screen.dart';
@@ -21,7 +19,7 @@ class WelcomeScreen extends StatelessWidget {
             onPressed: () {
               Get.changeThemeMode(
                   Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
-            },
+            }, 
           ),
         ],
       ),

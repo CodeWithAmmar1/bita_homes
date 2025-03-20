@@ -55,7 +55,7 @@ class WeatherCard extends StatelessWidget {
                           ),
                           SizedBox(width: 10,), // No extra space
                           Text(
-                            "${controller.temperature.value}°C",
+                            controller.temperature.value,
                             style: TextStyle(
                               fontSize: 14, // Slightly smaller temp text
                               fontWeight: FontWeight.bold,

@@ -62,6 +62,8 @@ class AuthController extends GetxController {
       confirmPasswordController.text
     );
     isLoading.value = false;
+    passwordController.clear();
+confirmPasswordController.clear();
   }
 
   Future<void> signinFun(BuildContext context) async {
