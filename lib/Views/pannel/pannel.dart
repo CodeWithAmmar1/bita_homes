@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
@@ -40,7 +42,6 @@ class _PannelState extends State<Pannel> {
   final MqttController _mqttcontroller = Get.put(MqttController());
   @override
   Widget build(BuildContext context) {
-    
     return Obx(
       () => Scaffold(
         backgroundColor: Colors.grey[300],
@@ -109,11 +110,20 @@ class _PannelState extends State<Pannel> {
                         min:
                             (_mqttcontroller.lastDamperValue.value < 5) ? 0 : 5,
                         max: 35,
-                        initialValue: _mqttcontroller.lastDamperValue.value,
+                        initialValue: _mqttcontroller.thermostatTemperature.value,
+                        onChangeStart: (_) {
+                          _mqttcontroller.isUserInteracting.value = true;
+                            log("Ignoring MQTT update because user is interacting");
+                        },
                         onChange: (double value) {
+                          _mqttcontroller.isUserInteracting.value = true;
+                          log("Ignoring MQTT update because user is interacting");
                           _mqttcontroller.changeDamperValue(value);
                         },
                         onChangeEnd: (double value) {
+                          log("_______________");
+                          _mqttcontroller.isUserInteracting.value = false;
+
                           String message = _mqttcontroller.createjson();
                           _mqttcontroller.publishMessage(message);
                         },
@@ -140,7 +150,7 @@ class _PannelState extends State<Pannel> {
                             Icon(
                               Icons.circle,
                               size: 10,
-                              color: _mqttcontroller.isOn.value
+                              color: _mqttcontroller.isConnected.value
                                   ? Color(0xFF24C48E)
                                   : Colors.red,
                             ),
@@ -151,7 +161,7 @@ class _PannelState extends State<Pannel> {
                               // height: 90,
                               height: Get.height * 0.12,
                               child: Text(
-                                "${_mqttcontroller.thermostatTemperature.round()}°C",
+                                "${_mqttcontroller.thermostatTemperature.value. round()}°C",
                                 style: TextStyle(
                                   fontFamily: 'DS-Digital',
                                   fontSize: Get.width * 0.2,
@@ -186,11 +196,14 @@ class _PannelState extends State<Pannel> {
                     ElevatedButton(
                         onPressed: () {
                           if (_mqttcontroller.lastDamperValue.value > 5) {
+                              // _mqttcontroller.isUserInteracting.value = true;
+                            log("Ignoring MQTT update because user is interacting");
                             _mqttcontroller.lastDamperValue.value -= 1;
                             _mqttcontroller.changeDamperValue(
                                 _mqttcontroller.lastDamperValue.value);
                             _mqttcontroller
                                 .publishMessage(_mqttcontroller.createjson());
+                                    // _mqttcontroller.isUserInteracting.value = false;
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -209,11 +222,14 @@ class _PannelState extends State<Pannel> {
                     ElevatedButton(
                         onPressed: () {
                           if (_mqttcontroller.lastDamperValue.value < 35) {
+                                // _mqttcontroller.isUserInteracting.value = true;
+                            log("Ignoring MQTT update because user is interacting");
                             _mqttcontroller.lastDamperValue.value += 1;
                             _mqttcontroller.changeDamperValue(
                                 _mqttcontroller.lastDamperValue.value);
                             _mqttcontroller
                                 .publishMessage(_mqttcontroller.createjson());
+                                //  _mqttcontroller.isUserInteracting.value = false;
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -308,7 +324,9 @@ class _PannelState extends State<Pannel> {
                   child: _buildIconContainer(
                       Icons.power_settings_new,
                       Colors.black,
-                      _mqttcontroller.isOn.value ? Color(0xFF24C48E) : Colors.grey,
+                      _mqttcontroller.isOn.value
+                          ? Color(0xFF24C48E)
+                          : Colors.grey,
                       "Switch",
                       Colors.black),
                 ),

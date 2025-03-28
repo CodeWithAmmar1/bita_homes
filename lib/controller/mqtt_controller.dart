@@ -14,6 +14,7 @@ import 'package:testappbita/utils/theme/theme.dart';
 import 'package:testappbita/services/firebase_service.dart';
 
 
+
 class MqttController extends GetxController {
   RxString topicSSIDvalue = "".obs;
   RxBool isSummer = false.obs;
@@ -33,6 +34,7 @@ class MqttController extends GetxController {
   RxInt packetId = 0.obs;
   RxBool isConnected = false.obs;
   RxString message = "".obs;
+  RxBool isUserInteracting = false.obs;
   
   RxString correctPassword = "1234567".obs;
   RxBool isPasswordCorrect = false.obs;
@@ -97,11 +99,14 @@ void _onDisconnected() {
       
       log('Message received on topic $topic: $payload');
       receivedMessage.value = payload;
-
-      if (topicSSIDvalue.value.isNotEmpty && topic == "/KRC/${topicSSIDvalue.value}") {
+      
+    if (isUserInteracting.value==false)
+      {
+        if (topicSSIDvalue.value.isNotEmpty && topic == "/KRC/${topicSSIDvalue.value}") {
         _handleMessage(payload);
       } else {
         _handleMessageDevice(payload, topic);
+      }
       }
     });
   }
@@ -143,7 +148,7 @@ void _onDisconnected() {
       }
     } 
     catch (e) {
-      log('MQTT client exception: $e');
+      log('MQTT client exception: $e');   
       client?.disconnect();
     }
   }
@@ -208,6 +213,7 @@ void _onDisconnected() {
         updatedIp: ip,
         updatedMac: mac,
       );
+ 
 
       // Update observable variables
       isOn.value = dampertsw == "1";
@@ -217,6 +223,8 @@ void _onDisconnected() {
       thermostatTemperature.value = double.parse(dmptempsp);
       currentValue.value = double.parse(supcfm);
 
+    
+log(lastDamperValue.toString());
       log("State updated: $jsonMap");
     } catch (e) {
       log("Error parsing message: $e");
@@ -251,7 +259,7 @@ void _onDisconnected() {
           topic,
           MqttQos.atLeastOnce,
           builder.payload!,
-          retain: true,
+          retain: false,
         );
         print('Message published to $topic: $message');
       } catch (e) {
@@ -272,7 +280,7 @@ void _onDisconnected() {
           topic,
           MqttQos.atLeastOnce,
           builder.payload!,
-          retain: true,
+          retain: false,
         );
         print('Message published to $topic: $message');
       } catch (e) {
@@ -344,9 +352,12 @@ void _onDisconnected() {
     isCalendarVisible.value = !isCalendarVisible.value;
   }
 
-  void    changeDamperValue(double value) {
-    lastDamperValue.value = value;
-    thermostatTemperature.value = value;
+  void changeDamperValue(double value) {
+    lastDamperValue.value =double.parse(value.toStringAsFixed(0));
+    thermostatTemperature.value =double.parse(value.toStringAsFixed(0));
+    thermostatTemperature.refresh();
+  
+    
   }
 
   String selectSeason(var summer) {
