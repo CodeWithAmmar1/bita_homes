@@ -279,7 +279,7 @@ class _QRCodeScannerState extends State<QRCodeScanner>
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
-              backgroundColor: Colors.grey.withOpacity(0.3),
+              backgroundColor: Colors.grey.withValues(alpha:  0.3),
               title: Text(
                 'Enter Your Device Name',
                 style: TextStyle(color: Colors.white // ✅ Dynamic text color

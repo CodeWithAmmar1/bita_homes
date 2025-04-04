@@ -68,7 +68,6 @@ class WeatherCard extends StatelessWidget {
         ));
   }
 
-  // Loading shimmer effect
   Widget _buildLoadingShimmer() {
     return Row(
       mainAxisSize: MainAxisSize.min,
