@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:testappbita/controller/weather_controller/weather_controller.dart';
 
 
-// Weather Card UI
 class WeatherCard extends StatelessWidget {
 
    WeatherCard({super.key});
@@ -12,16 +11,16 @@ class WeatherCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Card(
-          elevation: 3, // Slightly reduced elevation
+          elevation: 3, 
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8), // More compact corners
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Container(
             width:  Get.width *
                 0.92, 
-                height: Get.height*0.06,// Slightly increased width
+                height: Get.height*0.06,
             padding: EdgeInsets.symmetric(
-                horizontal: 12, vertical: 2), // Minimal vertical padding
+                horizontal: 12, vertical: 2),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               gradient: LinearGradient(
@@ -39,25 +38,24 @@ class WeatherCard extends StatelessWidget {
                       Text(
                         controller.location.value,
                         style: TextStyle(
-                          fontSize: 12, // Smaller city text
+                          fontSize: 12, 
                           fontWeight: FontWeight.w500,
                           color: Colors.white,
                         ),
                       ),
-                      // Icon & Temperature (Right)
                       Row(
                         children: [
                           Icon(
                             controller.getWeatherIcon(
                                 controller.weatherCondition.value),
-                            size: 28, // Even smaller icon
+                            size: 28, 
                             color: Colors.white,
                           ),
-                          SizedBox(width: 10,), // No extra space
+                          SizedBox(width: 10,), 
                           Text(
                             controller.temperature.value,
                             style: TextStyle(
-                              fontSize: 14, // Slightly smaller temp text
+                              fontSize: 14, 
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
