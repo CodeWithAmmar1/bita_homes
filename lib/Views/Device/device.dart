@@ -102,7 +102,7 @@ class _DevicesPageState extends State<DevicesPage> {
                         ),
                         itemBuilder: (context, index) {
                           final device = allDeviceData[index];
-
+                          //AM3
                           if ((device.deviceId ?? "")
                               .toUpperCase()
                               .startsWith("AM3")) {
@@ -287,7 +287,562 @@ class _DevicesPageState extends State<DevicesPage> {
                               ),
                             );
                           }
-
+                          //AM1
+                             if ((device.deviceId ?? "")
+                              .toUpperCase()
+                              .startsWith("HVAC")) {
+                            return Obx(
+                              () => Card(
+                                color: Theme.of(context).cardColor,
+                                elevation: 0,
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 5),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: isDarkMode
+                                        ? Colors.grey.withOpacity(0.2)
+                                        : Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(
+                                            Theme.of(context).brightness ==
+                                                    Brightness.dark
+                                                ? 0.1
+                                                : 0.2),
+                                        blurRadius: 6,
+                                        spreadRadius: 2,
+                                        offset: Offset(2, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Get.to(() => Pannel(), arguments: {
+                                        "name": "${device.deviceName}"
+                                      });
+                                      _mqttcontroller.updatetopicSSIDvalue(
+                                          device.deviceId ?? "");
+                                    },
+                                    onLongPress: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          backgroundColor: Theme.of(context)
+                                              .dialogBackgroundColor,
+                                          title: Text(
+                                            "delete_device".tr,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          content:
+                                              Text("delete_device_prompt".tr),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text(
+                                                "cancel".tr,
+                                                style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyLarge
+                                                        ?.color),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () async {
+                                                SharedPreferencesService()
+                                                    .deleteDeviceData(
+                                                        deviceId:
+                                                            device.deviceId ??
+                                                                "");
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text(
+                                                "delete".tr,
+                                                style: TextStyle(
+                                                    color: Colors.red),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 5, top: 5),
+                                                child: Container(
+                                                  width: 40, // Adjust as needed
+                                                  height:
+                                                      40, // Adjust as needed
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.blue
+                                                        .shade100, // Light blue shade
+                                                    shape: BoxShape
+                                                        .circle, // Makes it circular
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: Colors
+                                                            .blue, // Light shadow color
+                                                        blurRadius:
+                                                            10, // Soft blur effect
+                                                        spreadRadius: 2,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  child: Center(
+                                                    child: Image.asset(
+                                                      "assets/images/Temp.png",
+                                                      width: 35,
+                                                      height: 35,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5),
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  device.deviceName ?? "",
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyLarge
+                                                        ?.color,
+                                                  ),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      _mqttcontroller
+                                                                  .isConnected ==
+                                                              true
+                                                          ? 'Online'
+                                                          : 'Offline',
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: _mqttcontroller
+                                                                    .isConnected ==
+                                                                true
+                                                            ? Colors.green
+                                                            : Colors.red,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 20,
+                                                    ),
+                                                    Text(
+                                                      device.deviceId ?? "",
+                                                      style: TextStyle(
+                                                          fontSize: 12),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          //CONTROL MASTER
+                             if ((device.deviceId ?? "")
+                              .toUpperCase()
+                              .startsWith("CM")) {
+                            return Obx(
+                              () => Card(
+                                color: Theme.of(context).cardColor,
+                                elevation: 0,
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 5),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: isDarkMode
+                                        ? Colors.grey.withOpacity(0.2)
+                                        : Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(
+                                            Theme.of(context).brightness ==
+                                                    Brightness.dark
+                                                ? 0.1
+                                                : 0.2),
+                                        blurRadius: 6,
+                                        spreadRadius: 2,
+                                        offset: Offset(2, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Get.to(() => Pannel(), arguments: {
+                                        "name": "${device.deviceName}"
+                                      });
+                                      _mqttcontroller.updatetopicSSIDvalue(
+                                          device.deviceId ?? "");
+                                    },
+                                    onLongPress: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          backgroundColor: Theme.of(context)
+                                              .dialogBackgroundColor,
+                                          title: Text(
+                                            "delete_device".tr,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          content:
+                                              Text("delete_device_prompt".tr),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text(
+                                                "cancel".tr,
+                                                style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyLarge
+                                                        ?.color),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () async {
+                                                SharedPreferencesService()
+                                                    .deleteDeviceData(
+                                                        deviceId:
+                                                            device.deviceId ??
+                                                                "");
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text(
+                                                "delete".tr,
+                                                style: TextStyle(
+                                                    color: Colors.red),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 5, top: 5),
+                                                child: Container(
+                                                  width: 40, // Adjust as needed
+                                                  height:
+                                                      40, // Adjust as needed
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.blue
+                                                        .shade100, // Light blue shade
+                                                    shape: BoxShape
+                                                        .circle, // Makes it circular
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: Colors
+                                                            .blue, // Light shadow color
+                                                        blurRadius:
+                                                            10, // Soft blur effect
+                                                        spreadRadius: 2,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  child: Center(
+                                                    child: Image.asset(
+                                                      "assets/images/Temp.png",
+                                                      width: 35,
+                                                      height: 35,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5),
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  device.deviceName ?? "",
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyLarge
+                                                        ?.color,
+                                                  ),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      _mqttcontroller
+                                                                  .isConnected ==
+                                                              true
+                                                          ? 'Online'
+                                                          : 'Offline',
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: _mqttcontroller
+                                                                    .isConnected ==
+                                                                true
+                                                            ? Colors.green
+                                                            : Colors.red,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 20,
+                                                    ),
+                                                    Text(
+                                                      device.deviceId ?? "",
+                                                      style: TextStyle(
+                                                          fontSize: 12),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          //AQUA MASTER
+                            if ((device.deviceId ?? "")
+                              .toUpperCase()
+                              .startsWith("AM-")) {
+                            return Obx(
+                              () => Card(
+                                color: Theme.of(context).cardColor,
+                                elevation: 0,
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 5),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: isDarkMode
+                                        ? Colors.grey.withOpacity(0.2)
+                                        : Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(
+                                            Theme.of(context).brightness ==
+                                                    Brightness.dark
+                                                ? 0.1
+                                                : 0.2),
+                                        blurRadius: 6,
+                                        spreadRadius: 2,
+                                        offset: Offset(2, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Get.to(() => Pannel(), arguments: {
+                                        "name": "${device.deviceName}"
+                                      });
+                                      _mqttcontroller.updatetopicSSIDvalue(
+                                          device.deviceId ?? "");
+                                    },
+                                    onLongPress: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          backgroundColor: Theme.of(context)
+                                              .dialogBackgroundColor,
+                                          title: Text(
+                                            "delete_device".tr,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          content:
+                                              Text("delete_device_prompt".tr),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text(
+                                                "cancel".tr,
+                                                style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyLarge
+                                                        ?.color),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () async {
+                                                SharedPreferencesService()
+                                                    .deleteDeviceData(
+                                                        deviceId:
+                                                            device.deviceId ??
+                                                                "");
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text(
+                                                "delete".tr,
+                                                style: TextStyle(
+                                                    color: Colors.red),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 5, top: 5),
+                                                child: Container(
+                                                  width: 40, // Adjust as needed
+                                                  height:
+                                                      40, // Adjust as needed
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.blue
+                                                        .shade100, // Light blue shade
+                                                    shape: BoxShape
+                                                        .circle, // Makes it circular
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: Colors
+                                                            .blue, // Light shadow color
+                                                        blurRadius:
+                                                            10, // Soft blur effect
+                                                        spreadRadius: 2,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  child: Center(
+                                                    child: Image.asset(
+                                                      "assets/images/device.png",
+                                                      width: 35,
+                                                      height: 35,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5),
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  device.deviceName ?? "",
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyLarge
+                                                        ?.color,
+                                                  ),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      _mqttcontroller
+                                                                  .isConnected ==
+                                                              true
+                                                          ? 'Online'
+                                                          : 'Offline',
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: _mqttcontroller
+                                                                    .isConnected ==
+                                                                true
+                                                            ? Colors.green
+                                                            : Colors.red,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 20,
+                                                    ),
+                                                    Text(
+                                                      device.deviceId ?? "",
+                                                      style: TextStyle(
+                                                          fontSize: 12),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          //ZONE MASTER
                           return Obx(
                             () => Card(
                               color: Theme.of(context).cardColor,
