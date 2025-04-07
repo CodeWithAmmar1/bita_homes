@@ -10,10 +10,9 @@ import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testappbita/Views/pannel/custom_bottom_Cfm.dart';
+import 'package:testappbita/controller/switch_controller.dart';
 import 'package:testappbita/utils/theme/theme.dart';
 import 'package:testappbita/services/firebase_service.dart';
-
-
 
 class MqttController extends GetxController {
   RxString topicSSIDvalue = "".obs;
@@ -35,7 +34,7 @@ class MqttController extends GetxController {
   RxBool isConnected = false.obs;
   RxString message = "".obs;
   RxBool isUserInteracting = false.obs;
-  
+
   RxString correctPassword = "1234567".obs;
   RxBool isPasswordCorrect = false.obs;
   RxMap<String, double> deviceTemperatures = <String, double>{}.obs;
@@ -43,6 +42,8 @@ class MqttController extends GetxController {
 
   MqttServerClient? client;
   Timer? lockTimer;
+  var lastCMValue = 24.0.obs;
+  var receivedData = {}.obs;
 
   @override
   void onInit() {
@@ -66,28 +67,28 @@ class MqttController extends GetxController {
   }
 
   void _setupMqttClient() {
-    client = MqttServerClient.withPort(mqttBroker.value, clientId.value, port.value);
+    client =
+        MqttServerClient.withPort(mqttBroker.value, clientId.value, port.value);
     client?.secure = true;
     client?.keepAlivePeriod = 60;
     client?.setProtocolV311();
     client?.logging(on: false);
-    
+
     client?.onDisconnected = _onDisconnected;
     client?.onConnected = _onConnected;
     client?.onSubscribed = _onSubscribed;
   }
 
-void _onDisconnected() {
-  log("Disconnected from MQTT broker. Reconnecting...");
-  isConnected.value = false;
-  Future.delayed(Duration(seconds: 5), _connectMqtt);
-}
-
+  void _onDisconnected() {
+    log("Disconnected from MQTT broker. Reconnecting...");
+    isConnected.value = false;
+    Future.delayed(Duration(seconds: 5), _connectMqtt);
+  }
 
   void _onConnected() {
     log('Connected to MQTT broker.');
     isConnected.value = true;
-    
+
     String topic = '/KRC/#';
     client?.subscribe(topic, MqttQos.atLeastOnce);
     client?.updates?.listen((List<MqttReceivedMessage<MqttMessage>>? messages) {
@@ -95,18 +96,24 @@ void _onDisconnected() {
 
       final MqttPublishMessage msg = messages[0].payload as MqttPublishMessage;
       final String topic = messages[0].topic;
-      final String payload = MqttPublishPayload.bytesToStringAsString(msg.payload.message);
-      
+      final String payload =
+          MqttPublishPayload.bytesToStringAsString(msg.payload.message);
+
       log('Message received on topic $topic: $payload');
       receivedMessage.value = payload;
-      
-    if (isUserInteracting.value==false)
-      {
-        if (topicSSIDvalue.value.isNotEmpty && topic == "/KRC/${topicSSIDvalue.value}") {
-        _handleMessage(payload);
-      } else {
-        _handleMessageDevice(payload, topic);
-      }
+
+      if (isUserInteracting.value == false) {
+        if (topicSSIDvalue.value.isNotEmpty) {
+          if (topic == "/KRC/${topicSSIDvalue.value}") {
+            if (topicSSIDvalue.value.startsWith("CM2")) {
+              onMessageReceived(payload);
+            } else if (topicSSIDvalue.value.startsWith("ZMB")) {
+              _handleMessage(payload);
+            }
+          }
+        } else {
+          _handleMessageDevice(payload, topic);
+        }
       }
     });
   }
@@ -134,7 +141,9 @@ void _onDisconnected() {
       context.usePrivateKeyBytes(privateKey.buffer.asUint8List());
 
       client!.securityContext = context;
-      client!.connectionMessage = MqttConnectMessage().withClientIdentifier(clientId.value).startClean();
+      client!.connectionMessage = MqttConnectMessage()
+          .withClientIdentifier(clientId.value)
+          .startClean();
 
       log("Connecting to MQTT broker...");
       await client!.connect();
@@ -146,15 +155,11 @@ void _onDisconnected() {
         log('Connection failed: ${client!.connectionStatus!.state}');
         client!.disconnect();
       }
-    } 
-    catch (e) {
-      log('MQTT client exception: $e');   
+    } catch (e) {
+      log('MQTT client exception: $e');
       client?.disconnect();
     }
   }
-
-
-
 
   void updateTemperature(String topic, double temp) {
     deviceTemperatures[topic] = temp;
@@ -213,7 +218,6 @@ void _onDisconnected() {
         updatedIp: ip,
         updatedMac: mac,
       );
- 
 
       // Update observable variables
       isOn.value = dampertsw == "1";
@@ -223,8 +227,7 @@ void _onDisconnected() {
       thermostatTemperature.value = double.parse(dmptempsp);
       currentValue.value = double.parse(supcfm);
 
-    
-log(lastDamperValue.toString());
+      log(lastDamperValue.toString());
       log("State updated: $jsonMap");
     } catch (e) {
       log("Error parsing message: $e");
@@ -353,11 +356,9 @@ log(lastDamperValue.toString());
   }
 
   void changeDamperValue(double value) {
-    lastDamperValue.value =double.parse(value.toStringAsFixed(0));
-    thermostatTemperature.value =double.parse(value.toStringAsFixed(0));
+    lastDamperValue.value = double.parse(value.toStringAsFixed(0));
+    thermostatTemperature.value = double.parse(value.toStringAsFixed(0));
     thermostatTemperature.refresh();
-  
-    
   }
 
   String selectSeason(var summer) {
@@ -370,6 +371,115 @@ log(lastDamperValue.toString());
     publishMessage(message);
 
     return message;
+  }
+
+  void onMessageReceived(String messages) {
+    try {
+      Map<String, dynamic> data = jsonDecode(messages);
+      receivedData.value = data; // ✅ Update global state
+      print("✅ Received MQTT Data: $data");
+
+      final switchController = Get.find<SwitchCardController>();
+
+      bool updated = false;
+
+      if (data.containsKey('fansw')) {
+        bool fanSwitch = data['fansw'] == 1;
+        if (switchController.switchCards[0].status != fanSwitch) {
+          switchController.switchCards[0].status = fanSwitch;
+          updated = true;
+        }
+      }
+
+      if (data.containsKey('fanstate')) {
+        switchController.switchCards[0].actualState = data['fanstate'] == 1;
+        updated = true;
+      }
+
+      if (data.containsKey('pumpsw')) {
+        bool pumpSwitch = data['pumpsw'] == 1;
+        if (switchController.switchCards[1].status != pumpSwitch) {
+          switchController.switchCards[1].status = pumpSwitch;
+          updated = true;
+        }
+      }
+
+      if (data.containsKey('pumpstate')) {
+        switchController.switchCards[1].actualState = data['pumpstate'] == 1;
+        updated = true;
+      }
+
+      if (data.containsKey("switches") && data["switches"] is List) {
+        for (var switchData in data["switches"]) {
+          if (switchData is Map<String, dynamic>) {
+            int index = switchData["switch_index"] ?? -1;
+            bool state = (switchData["switch_state"] ?? 0) == 1;
+
+            if (index >= 0 && index < switchController.switchCards.length) {
+              switchController.switchCards[index].status = state;
+              updated = true;
+            }
+          }
+        }
+      }
+
+      // Refresh UI only if there were updates
+      if (updated) {
+        switchController.switchCards.refresh();
+        print("🚀 UI Updated with new switch states!");
+      }
+    } catch (e) {
+      print("❌ Error processing MQTT message: $e");
+      print("📩 Raw message: $message");
+    }
+  }
+
+  void sendData(Map<String, dynamic> receivedData,
+      {int? switchIndex, int? switchState}) {
+    Map<String, dynamic> jsonData = {
+      "coolmastersw": receivedData["coolmastersw"] ?? 1,
+      "temp1": receivedData["temp1"] ?? 23,
+      "temp1sp": receivedData["temp1sp"] ?? 28,
+      "fansw": receivedData["fansw"] ?? 1,
+      "fanstate": receivedData["fanstate"] ?? 1,
+      "fanspeed": receivedData["fanspeed"] ?? 2,
+      "pumpsw": receivedData["pumpsw"] ?? 1,
+      "pumpstate": receivedData["pumpstate"] ?? 1,
+      "waterlevel": receivedData["waterlevel"] ?? 45,
+      "waterlevelsp": receivedData["waterlevelsp"] ?? 50,
+    };
+
+    if (switchIndex != null && switchState != null) {
+      bool switchFound = false;
+
+      for (var switchItem in jsonData["switches"]) {
+        if (switchItem["switch_index"] == switchIndex) {
+          switchItem["switch_state"] = switchState;
+          switchFound = true;
+          break;
+        }
+      }
+
+      if (!switchFound) {
+        jsonData["switches"]
+            .add({"switch_index": switchIndex, "switch_state": switchState});
+      }
+    }
+
+    String jsonString = jsonEncode(jsonData);
+    print("📤 Sending MQTT Message: $jsonString");
+
+    final builder = MqttClientPayloadBuilder();
+    builder.addString(jsonString);
+
+    if (builder.payload == null || builder.payload!.isEmpty) {
+      print("❌ MQTT Payload is empty! Message not sent.");
+      return;
+    }
+
+    client?.publishMessage("/test/${topicSSIDvalue.value}/1",
+        MqttQos.atMostOnce, builder.payload!);
+    print("✅ MQTT Message Sent Successfully!");
   }
 
   void showDateTimePicker(BuildContext context) async {

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:testappbita/Views/control_master/control_master/cm_pannel.dart';
 import 'package:testappbita/Views/qr_code/qr_code_scanner_page.dart';
 import 'package:testappbita/Views/weather/weather_cards.dart';
 import 'package:testappbita/controller/mqtt_controller.dart';
@@ -221,9 +222,9 @@ class _DevicesPageState extends State<DevicesPage> {
                                                   ),
                                                   child: Center(
                                                     child: Image.asset(
-                                                      "assets/images/Temp.png",
-                                                      width: 35,
-                                                      height: 35,
+                                                      "assets/images/alert_master2.png",
+                                                      width: 45,
+                                                      height: 45,
                                                     ),
                                                   ),
                                                 ),
@@ -406,9 +407,9 @@ class _DevicesPageState extends State<DevicesPage> {
                                                   ),
                                                   child: Center(
                                                     child: Image.asset(
-                                                      "assets/images/Temp.png",
-                                                      width: 35,
-                                                      height: 35,
+                                                      "assets/images/alert_master1.png",
+                                                      width: 45,
+                                                      height: 45,
                                                     ),
                                                   ),
                                                 ),
@@ -503,7 +504,7 @@ class _DevicesPageState extends State<DevicesPage> {
                                   ),
                                   child: InkWell(
                                     onTap: () {
-                                      Get.to(() => Pannel(), arguments: {
+                                      Get.to(() => CMPannel(), arguments: {
                                         "name": "${device.deviceName}"
                                       });
                                       _mqttcontroller.updatetopicSSIDvalue(
@@ -591,9 +592,9 @@ class _DevicesPageState extends State<DevicesPage> {
                                                   ),
                                                   child: Center(
                                                     child: Image.asset(
-                                                      "assets/images/Temp.png",
-                                                      width: 35,
-                                                      height: 35,
+                                                      "assets/images/control_master.png",
+                                                      width: 45,
+                                                      height: 45,
                                                     ),
                                                   ),
                                                 ),
@@ -776,9 +777,9 @@ class _DevicesPageState extends State<DevicesPage> {
                                                   ),
                                                   child: Center(
                                                     child: Image.asset(
-                                                      "assets/images/device.png",
-                                                      width: 35,
-                                                      height: 35,
+                                                      "assets/images/aqua_master.png",
+                                                      width: 45,
+                                                      height: 45,
                                                     ),
                                                   ),
                                                 ),
@@ -951,15 +952,15 @@ class _DevicesPageState extends State<DevicesPage> {
                                                           .blue, // Light shadow color
                                                       blurRadius:
                                                           10, // Soft blur effect
-                                                      spreadRadius: 2,
+                                                      spreadRadius: 1,
                                                     ),
                                                   ],
                                                 ),
                                                 child: Center(
                                                   child: Image.asset(
-                                                    "assets/images/damper1.png",
-                                                    width: 35,
-                                                    height: 35,
+                                                    "assets/images/zone_master.png",
+                                                    width: 45,
+                                                    height: 45,
                                                   ),
                                                 ),
                                               ),

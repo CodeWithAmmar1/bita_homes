@@ -272,6 +272,12 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "intl",
+      "rootUri": "file:///C:/Users/syeda/AppData/Local/Pub/Cache/hosted/pub.dev/intl-0.20.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
       "name": "leak_tracker",
       "rootUri": "file:///C:/Users/syeda/AppData/Local/Pub/Cache/hosted/pub.dev/leak_tracker-10.0.8",
       "packageUri": "lib/",
@@ -294,6 +300,12 @@
       "rootUri": "file:///C:/Users/syeda/AppData/Local/Pub/Cache/hosted/pub.dev/lints-5.1.1",
       "packageUri": "lib/",
       "languageVersion": "3.6"
+    },
+    {
+      "name": "lucide_icons",
+      "rootUri": "file:///C:/Users/syeda/AppData/Local/Pub/Cache/hosted/pub.dev/lucide_icons-0.257.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "matcher",
@@ -608,7 +620,7 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2025-03-25T19:15:13.230579Z",
+  "generated": "2025-04-07T10:35:10.052133Z",
   "generator": "pub",
   "generatorVersion": "3.7.0",
   "flutterRoot": "file:///C:/Users/syeda/Downloads/flutter_windows_3.29.0-stable/flutter",
