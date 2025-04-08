@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:testappbita/Views/splash/splash_Screen.dart';
 import 'package:testappbita/firebase_options.dart';
 import 'package:testappbita/services/localization/localization.dart';
@@ -10,14 +11,27 @@ import 'package:testappbita/utils/theme/theme_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await _requestPermissions();
   await Firebase.initializeApp(
+
     options: DefaultFirebaseOptions.currentPlatform,
+    
   );
   // Get.put(ThemeController());
   await dotenv.load(); // Load the .env file
  
   runApp(const MyApp());
 }
+
+
+
+Future<void> _requestPermissions() async {
+  var status = await Permission.camera.status;
+  if (!status.isGranted) {
+    await Permission.camera.request();
+  }
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

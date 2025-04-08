@@ -56,7 +56,7 @@ class _CMPannelState extends State<CMPannel> {
       () => Scaffold(
         backgroundColor: Colors.grey[300],
         appBar: AppBar( automaticallyImplyLeading: false,
-          backgroundColor: Colors.green,
+          backgroundColor:  Color(0xFF24C48E),
           title: Row(
             
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -125,12 +125,12 @@ class _CMPannelState extends State<CMPannel> {
                             handlerSize: Get.width * 0.030,
                           ),
                           customColors: CustomSliderColors(
-                            trackColor: Colors.grey[400]!,
+                            trackColor: Colors.grey[300]!,
                             progressBarColors: [
-                              Colors.greenAccent,
-                              Colors.green
+                               Color(0xFF24C48E),
+                               Color(0xFF24C48E)
                             ],
-                            dotColor: Colors.green,
+                            dotColor:  Color(0xFF24C48E),
                           ),
                         ),
                         min:
@@ -169,7 +169,7 @@ class _CMPannelState extends State<CMPannel> {
                               Icons.circle,
                               size: 10,
                               color: mqttController.isConnected.value
-                                  ? Colors.green
+                                  ?  Color(0xFF24C48E)
                                   : Colors.red,
                             ),
                             SizedBox(
@@ -238,7 +238,7 @@ class _CMPannelState extends State<CMPannel> {
                                   updateTemperature(temperature - 1);
                                 }
                               },
-                              child: Icon(Icons.remove, color: Colors.green),
+                              child: Icon(Icons.remove, color:  Color(0xFF24C48E)),
                             ),
                             SizedBox(
                                 width: Get.width *
@@ -259,7 +259,7 @@ class _CMPannelState extends State<CMPannel> {
                                   updateTemperature(temperature + 1);
                                 }
                               },
-                              child: Icon(Icons.add, color: Colors.green),
+                              child: Icon(Icons.add, color:  Color(0xFF24C48E)),
                             ),
                           ],
                         ),
@@ -270,17 +270,17 @@ class _CMPannelState extends State<CMPannel> {
               ),
             ),
             
-            SizedBox(
-              height: Get.height * 0.009,
-            ),
+            // SizedBox(
+            //   height: Get.height * 0.009,
+            // ),
             WaterLevelContainer()
           ],
         ),
         bottomNavigationBar: Container(
-          height: Get.height * 0.11,
+          height: Get.height * 0.09,
           color: Colors.white,
           child: Padding(
-            padding: EdgeInsets.all(Get.width * 0.019),
+            padding: EdgeInsets.all(Get.width * 0.015),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -294,19 +294,20 @@ class _CMPannelState extends State<CMPannel> {
                             bool isOn = switchController.switchCards[0].status;
                             return CircleAvatar(
                               backgroundColor:
-                                  isOn ? Colors.green : Colors.grey,
-                              radius: Get.width * 0.056,
-                              child: Center(
-                                child: IconButton(
-                                  icon: Icon(
+                                  isOn ?  Color(0xFF24C48E) : Colors.grey,
+                              radius: 15
+                              ,
+                              child: IconButton(
+                                icon: Center(
+                                  child: Icon(
                                     LucideIcons.power,
                                     color: Colors.black,
-                                    size: Get.width * 0.07,
+                                    size: Get.width * 0.04,
                                   ),
-                                  onPressed: () {
-                                    switchController.toggleSwitch(0);
-                                  },
                                 ),
+                                onPressed: () {
+                                  switchController.toggleSwitch(0);
+                                },
                               ),
                             );
                           }),
@@ -318,7 +319,7 @@ class _CMPannelState extends State<CMPannel> {
                                   "Fan Controller",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: Get.width * 0.035),
+                                      fontSize: Get.width * 0.030),
                                 ),
                               )
                             ],
@@ -338,19 +339,17 @@ class _CMPannelState extends State<CMPannel> {
                             bool isOn = switchController.switchCards[1].status;
                             return CircleAvatar(
                               backgroundColor:
-                                  isOn ? Colors.green : Colors.grey,
-                              radius: Get.width * 0.056,
-                              child: Center(
-                                child: IconButton(
-                                  icon: Icon(
-                                    LucideIcons.power,
-                                    color: Colors.black,
-                                    size: Get.width * 0.07,
-                                  ),
-                                  onPressed: () {
-                                    switchController.toggleSwitch(1);
-                                  },
+                                  isOn ?  Color(0xFF24C48E) : Colors.grey,
+                              radius: 15,
+                              child: IconButton(
+                                icon: Icon(
+                                  LucideIcons.power,
+                                  color: Colors.black,
+                                  size: Get.width * 0.04,
                                 ),
+                                onPressed: () {
+                                  switchController.toggleSwitch(1);
+                                },
                               ),
                             );
                           }),
@@ -362,7 +361,7 @@ class _CMPannelState extends State<CMPannel> {
                                   "Pump Controller",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: Get.width * 0.035),
+                                      fontSize: Get.width * 0.030),
                                 ),
                               )
                             ],
@@ -380,21 +379,3 @@ class _CMPannelState extends State<CMPannel> {
     );
   }
 }
-
-// Widget _buildIconContainer(
-//     IconData icon, Color iconColor, Color color, String text, Color txtcolor) {
-//   return Column(
-//     children: [
-//       Container(
-//         height: Get.height * 0.05,
-//         width: Get.width * 0.1,
-//         decoration: BoxDecoration(shape: BoxShape.circle, color: color),
-//         child: Icon(icon, color: iconColor),
-//       ),
-//       Text(
-//         text.tr,
-//         style: TextStyle(color: txtcolor),
-//       )
-//     ],
-//   );
-// }
