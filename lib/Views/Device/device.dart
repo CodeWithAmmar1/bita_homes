@@ -117,11 +117,11 @@ class _DevicesPageState extends State<DevicesPage> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
                                     color: isDarkMode
-                                        ? Colors.grey.withOpacity(0.2)
+                                        ? Colors.grey.withValues(alpha:0.2)
                                         : Colors.white,
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.black.withOpacity(
+                                        color: Colors.black.withValues(alpha:
                                             Theme.of(context).brightness ==
                                                     Brightness.dark
                                                 ? 0.1
@@ -302,11 +302,11 @@ class _DevicesPageState extends State<DevicesPage> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
                                     color: isDarkMode
-                                        ? Colors.grey.withOpacity(0.2)
+                                        ? Colors.grey.withValues(alpha:  0.2)
                                         : Colors.white,
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.black.withOpacity(
+                                        color: Colors.black.withValues(alpha: 
                                             Theme.of(context).brightness ==
                                                     Brightness.dark
                                                 ? 0.1
@@ -487,11 +487,11 @@ class _DevicesPageState extends State<DevicesPage> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
                                     color: isDarkMode
-                                        ? Colors.grey.withOpacity(0.2)
+                                        ? Colors.grey.withValues(alpha:  0.2)
                                         : Colors.white,
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.black.withOpacity(
+                                        color: Colors.black.withValues(alpha: 
                                             Theme.of(context).brightness ==
                                                     Brightness.dark
                                                 ? 0.1
@@ -672,11 +672,11 @@ class _DevicesPageState extends State<DevicesPage> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
                                     color: isDarkMode
-                                        ? Colors.grey.withOpacity(0.2)
+                                        ? Colors.grey.withValues(alpha:  0.2)
                                         : Colors.white,
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.black.withOpacity(
+                                        color: Colors.black.withValues( alpha: 
                                             Theme.of(context).brightness ==
                                                     Brightness.dark
                                                 ? 0.1
@@ -854,11 +854,11 @@ class _DevicesPageState extends State<DevicesPage> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
                                   color: isDarkMode
-                                      ? Colors.grey.withOpacity(0.2)
+                                      ? Colors.grey.withValues(alpha:0.2)
                                       : Colors.white,
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black.withOpacity(
+                                      color: Colors.black.withValues(alpha:
                                           Theme.of(context).brightness ==
                                                   Brightness.dark
                                               ? 0.1
@@ -1031,7 +1031,7 @@ class _DevicesPageState extends State<DevicesPage> {
                                                                         10,
                                                                         238,
                                                                         18)
-                                                                    .withOpacity(
+                                                                    .withValues(alpha:
                                                                         0.2), // Glow color
                                                                 blurRadius:
                                                                     6, // Spread of the glow
@@ -1171,8 +1171,8 @@ class _CustomIconButtonState extends State<CustomIconButton> {
         decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: isPressed
-                ? Colors.grey.withOpacity(0.2)
-                : Colors.grey.withOpacity(0.2) // Background effect
+                ? Colors.grey.withValues(alpha:0.2)
+                : Colors.grey.withValues(alpha:0.2) // Background effect
             ),
         child: Icon(widget.icon,
             color: isPressed

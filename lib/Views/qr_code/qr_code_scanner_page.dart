@@ -209,7 +209,7 @@ class _QRCodeScannerState extends State<QRCodeScanner>
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Colors.grey.withOpacity(0.3), // Dark background
+          backgroundColor: Colors.grey.withValues(alpha:0.3), // Dark background
           title: Text(
             'Connect Damper to Wi-Fi',
             style: TextStyle(color: Colors.white), // White text
