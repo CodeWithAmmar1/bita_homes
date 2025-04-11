@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:testappbita/Views/am_2/dashboard_view.dart';
 import 'package:testappbita/Views/control_master/control_master/cm_pannel.dart';
 import 'package:testappbita/Views/qr_code/qr_code_scanner_page.dart';
 import 'package:testappbita/Views/weather/weather_cards.dart';
@@ -134,7 +135,7 @@ class _DevicesPageState extends State<DevicesPage> {
                                   ),
                                   child: InkWell(
                                     onTap: () {
-                                      Get.to(() => Pannel(), arguments: {
+                                      Get.to(() => Dashboardam2(), arguments: {
                                         "name": "${device.deviceName}"
                                       });
                                       _mqttcontroller.updatetopicSSIDvalue(

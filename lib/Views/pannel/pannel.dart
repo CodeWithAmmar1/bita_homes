@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import 'package:testappbita/controller/mqtt_controller.dart';
 import 'package:testappbita/Views/pannel/custom_bottom.dart';
+import 'package:testappbita/utils/theme/theme.dart';
 
 class Pannel extends StatefulWidget {
   const Pannel({super.key});
@@ -42,13 +43,14 @@ class _PannelState extends State<Pannel> {
   final MqttController _mqttcontroller = Get.put(MqttController());
   @override
   Widget build(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Obx(
       () => Scaffold(
-        backgroundColor: Colors.grey[300],
+       backgroundColor: Get.isDarkMode ? ThemeColor().mode2 :ThemeColor().mode1,
         appBar: AppBar(
-          backgroundColor: Color(0xFF24C48E),
+          backgroundColor: ThemeColor().actual,
           centerTitle: true,
-          title: Text("ZONE MASTER ( ${deviceName.toUpperCase()} )"),
+          title: Text("ZONE MASTER ( ${deviceName.toUpperCase()} )",style: TextStyle(color:  Get.isDarkMode ? ThemeColor().mode2 :ThemeColor().mode1,),),
           //     Text(
           //   _mqttcontroller.topicSSIDvalue.value,
           //   style: TextStyle(fontWeight: FontWeight.bold),
@@ -132,11 +134,11 @@ class _PannelState extends State<Pannel> {
                         width: Get.width * 0.6,
                         height: Get.height * 0.3,
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color:  Get.isDarkMode ? ThemeColor().mode2Sec :ThemeColor().mode1Sec,
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black26,
+                              color: Get.isDarkMode ? ThemeColor().actual.withValues(alpha: 0.8) : Colors.black26,
                               blurRadius: 20,
                               spreadRadius: 8,
                             ),
@@ -166,7 +168,7 @@ class _PannelState extends State<Pannel> {
                                   fontFamily: 'DS-Digital',
                                   fontSize: Get.width * 0.2,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                                  color: Get.isDarkMode ? Colors.white :Colors.black,
                                 ),
                               ),
                             ),
@@ -178,7 +180,7 @@ class _PannelState extends State<Pannel> {
                                 fontSize: Get.width * 0.035,
                                 color: _mqttcontroller.lastDamperValue.value < 5
                                     ? Colors.red
-                                    : Colors.grey[700],
+                                    : Get.isDarkMode ? Colors.white :Colors.black,
                               ),
                             ),
                           ],
@@ -207,7 +209,7 @@ class _PannelState extends State<Pannel> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
+                          backgroundColor: Get.isDarkMode ? ThemeColor().mode2Sec :ThemeColor().mode1Sec,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
@@ -233,7 +235,7 @@ class _PannelState extends State<Pannel> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
+                          backgroundColor :Get.isDarkMode ? ThemeColor().mode2Sec :ThemeColor().mode1Sec,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
@@ -270,7 +272,7 @@ class _PannelState extends State<Pannel> {
                                   : "winter".tr,
                               style: TextStyle(
                                 fontSize: 15,
-                                color: Colors.black,
+                                color:Get.isDarkMode ? Colors.white :Colors.black,
                               ),
                             ),
                           ],
@@ -293,7 +295,8 @@ class _PannelState extends State<Pannel> {
                                   "${_mqttcontroller.currentValue.toStringAsFixed(0)}%",
                               style: TextStyle(
                                 fontSize: 15,
-                                color: Colors.black,
+                                color:Get.isDarkMode ? Colors.white :Colors.black,
+
                               ),
                             )
                           ],
@@ -308,7 +311,7 @@ class _PannelState extends State<Pannel> {
         ),
         bottomNavigationBar: Container(
           height: 80,
-          color: Colors.white,
+          color:  Get.isDarkMode ? ThemeColor().mode2Sec :ThemeColor().mode1Sec,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -328,21 +331,21 @@ class _PannelState extends State<Pannel> {
                           ? Color(0xFF24C48E)
                           : Colors.grey,
                       "Switch",
-                      Colors.black),
+                     Get.isDarkMode ? Colors.white :Colors.black,),
                 ),
                 GestureDetector(
                   onTap: () => _showBottomSheet("Season"),
                   child: _buildIconContainer(Icons.dashboard, Color(0xFF24C48E),
-                      Colors.grey.shade200, "Season", Colors.black),
+                      Colors.grey.shade200, "Season",  Get.isDarkMode ? Colors.white :Colors.black,),
                 ),
                 GestureDetector(
                   onLongPress: () =>
                       _mqttcontroller.showPasswordDialog(context),
                   child: _buildIconContainer(Icons.tune, Colors.grey,
-                      Colors.grey.shade200, "CFM", Colors.grey),
+                      Colors.grey.shade200, "CFM",   Get.isDarkMode ? Colors.grey.shade500 :Colors.grey.shade700,),
                 ),
                 _buildIconContainer(Icons.calendar_month, Color(0xFF24C48E),
-                    Colors.grey.shade200, "Schedule", Colors.black),
+                    Colors.grey.shade200, "Schedule",  Get.isDarkMode ? Colors.white :Colors.black,),
               ],
             ),
           ),
@@ -364,7 +367,7 @@ Widget _buildIconContainer(
       ),
       Text(
         text.tr,
-        style: TextStyle(color: txtcolor),
+        style: TextStyle(color: txtcolor,),
       )
     ],
   );

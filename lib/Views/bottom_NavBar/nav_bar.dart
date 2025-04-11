@@ -31,7 +31,7 @@ class NavBar extends StatelessWidget {
           children: screens,
         ),
         bottomNavigationBar: Container(
-          height: 60, // Reduce height of the navbar
+          height: 60, 
           decoration: BoxDecoration(
             border: Border(
               top: BorderSide(
@@ -50,13 +50,13 @@ class NavBar extends StatelessWidget {
               unselectedItemColor: isDarkMode ? Colors.grey.shade600 : Colors.grey.shade400,
               selectedLabelStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
               unselectedLabelStyle: const TextStyle(fontSize: 10),
-              iconSize: 30,// Decrease icon size
+              iconSize: 30,
               onTap: (index) => controller.updateIndex(index),
               currentIndex: controller.currentIndex.value,
               items: [
                 BottomNavigationBarItem(
                   icon: Padding(
-                    padding: const EdgeInsets.only(bottom: 2), // Reduce spacing
+                    padding: const EdgeInsets.only(bottom: 2), 
                     child: Icon(Icons.home_rounded),
                   ),
                   label: "home".tr,
