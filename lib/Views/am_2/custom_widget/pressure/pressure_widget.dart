@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:testappbita/utils/theme/theme.dart';
 
 class Pressurewidget extends StatelessWidget {
   final String title;
@@ -28,7 +29,7 @@ class Pressurewidget extends StatelessWidget {
         height: Get.width * 0.49,
         width: Get.width * 0.4,
         decoration: BoxDecoration(
-          color: Colors.grey.shade800,
+          color: Get.isDarkMode ? ThemeColor().mode2Sec :ThemeColor().mode1Sec,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -38,10 +39,10 @@ class Pressurewidget extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 title,
-                style: const TextStyle(
+                style:  TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                    color:Get.isDarkMode ? Colors.white :Colors.black),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -55,9 +56,9 @@ class Pressurewidget extends StatelessWidget {
                   child: CircularProgressIndicator(
                     value: (double.parse(setpoint) / 1000),
                     strokeWidth: 4,
-                    backgroundColor: Colors.white54,
+                    backgroundColor: Colors.grey[500],
                     valueColor:
-                        const AlwaysStoppedAnimation<Color>(Colors.greenAccent),
+                        const AlwaysStoppedAnimation<Color>( Color(0xFF24C456)),
                   ),
                 ),
                 Text(
@@ -77,7 +78,7 @@ class Pressurewidget extends StatelessWidget {
                 height: Get.height * 0.055,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: Colors.green.withValues(alpha: 0.8),
+                  color:ThemeColor().actual,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -89,19 +90,19 @@ class Pressurewidget extends StatelessWidget {
                       if (low != null)
                         Row(
                           children: [
-                            const Text('Low: ',
-                                style: TextStyle(
+                             Text('Low: ',
+                                style: TextStyle( color:Get.isDarkMode ? Colors.white :Colors.black,
                                     fontSize: 13, fontWeight: FontWeight.bold)),
-                            Text(low!, style: const TextStyle(fontSize: 13)),
+                            Text(low!, style:  TextStyle( color:Get.isDarkMode ? Colors.white :Colors.black,fontSize: 13)),
                           ],
                         ),
                       if (high != null)
                         Row(
                           children: [
-                            const Text('High: ',
-                                style: TextStyle(
+                             Text('High: ',
+                                style: TextStyle( color:Get.isDarkMode ? Colors.white :Colors.black,
                                     fontSize: 13, fontWeight: FontWeight.bold)),
-                            Text(high!, style: const TextStyle(fontSize: 13)),
+                            Text(high!, style:  TextStyle( color:Get.isDarkMode ? Colors.white :Colors.black,fontSize: 13)),
                           ],
                         ),
                     ],

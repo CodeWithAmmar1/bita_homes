@@ -17,12 +17,7 @@ class PressureContainer extends StatelessWidget {
         width: Get.width * 0.95,
         height: Get.height * 0.24,
         decoration: BoxDecoration(
-          //  gradient: LinearGradient( begin: Alignment.topLeft,
-          //                 end: Alignment.bottomRight,
-          //                 colors: [
-          //                   Colors.green.shade700,
-          //                   Colors.white,
-          //                 ], ),
+          
              color:Get.isDarkMode ? ThemeColor().mode2Sec :ThemeColor().mode1Sec,
           borderRadius: BorderRadius.circular(Get.width * 0.03),
         ),

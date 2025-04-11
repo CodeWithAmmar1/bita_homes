@@ -101,10 +101,10 @@ class _PannelState extends State<Pannel> {
                             handlerSize: Get.width * 0.025,
                           ),
                           customColors: CustomSliderColors(
-                            trackColor: Colors.grey[300]!,
+                            trackColor: Colors.grey[500],
                             progressBarColors: [
                               Color(0xFF24C48E),
-                              Color(0xFF24C48E)
+                              Color(0xFF24C456)
                             ],
                             dotColor: Color(0xFF24C48E),
                           ),

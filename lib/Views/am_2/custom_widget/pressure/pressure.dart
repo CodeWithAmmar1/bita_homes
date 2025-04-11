@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:testappbita/Views/am_2/custom_widget/pressure/pressure_widget.dart';
@@ -6,6 +5,7 @@ import 'package:testappbita/Views/am_2/custom_widget/pressure/pressures_setting/
 import 'package:testappbita/Views/am_2/custom_widget/pressure/pressures_setting/oil_pressure_setting.dart';
 import 'package:testappbita/Views/am_2/custom_widget/pressure/pressures_setting/suction_pressure_setting.dart';
 import 'package:testappbita/controller/mqtt_controller.dart';
+import 'package:testappbita/utils/theme/theme.dart';
 
 class Pressures extends StatelessWidget {
   Pressures({super.key});
@@ -88,7 +88,7 @@ class Pressures extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       backgroundColor: Colors.white.withValues(alpha: 0.9),
+      backgroundColor: Get.isDarkMode ? ThemeColor().mode2 : ThemeColor().mode1,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -101,16 +101,16 @@ class Pressures extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade800,
+                  color: ThemeColor().actual,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
                       Icons.air_outlined,
                       size: 30,
-                      color: Colors.red,
+                      color: Get.isDarkMode ? Colors.white : Colors.black,
                     ),
                     SizedBox(width: 10),
                     Text(
@@ -118,7 +118,7 @@ class Pressures extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white),
+                          color: Get.isDarkMode ? Colors.white : Colors.black),
                     ),
                   ],
                 ),
@@ -140,7 +140,7 @@ class Pressures extends StatelessWidget {
                         getColorLogic: (pressure) => controller.psig1.value <=
                                 controller.psig1sethigh.value
                             ? Colors.red
-                            : Colors.white),
+                           : Get.isDarkMode ? Colors.white :Colors.black),
                   ),
                 ),
                 GestureDetector(
@@ -155,7 +155,7 @@ class Pressures extends StatelessWidget {
                       getColorLogic: (pressure) =>
                           controller.psig2.value <= controller.psig2setlow.value
                               ? Colors.red
-                              : Colors.white,
+                              : Get.isDarkMode ? Colors.white :Colors.black,
                     ),
                   ),
                 ),
@@ -181,11 +181,11 @@ class Pressures extends StatelessWidget {
                                   controller.psig3.value <=
                                           controller.psig3sethigh.value
                                       ? Colors.red
-                                      : Colors.white,
+                                     : Get.isDarkMode ? Colors.white :Colors.black,
                             ),
                           ),
                         )
-                      : const Icon(Icons.lock, color: Colors.white, size: 40),
+                      :  Icon(Icons.lock, color: Get.isDarkMode ? Colors.white :Colors.black, size: 40),
                 )),
           ],
         ),

@@ -7,6 +7,7 @@ import 'package:testappbita/Views/am_2/custom_widget/temperature/temperatures_se
 import 'package:testappbita/Views/am_2/custom_widget/temperature/temperatures_settings/suction_setting.dart';
 import 'package:testappbita/Views/am_2/custom_widget/temperature/temperatures_settings/supply_setting.dart';
 import 'package:testappbita/controller/mqtt_controller.dart';
+import 'package:testappbita/utils/theme/theme.dart';
 
 class Temperature extends StatelessWidget {
   Temperature({super.key});
@@ -14,7 +15,7 @@ class Temperature extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white.withValues(alpha: 0.9),
+   backgroundColor: Get.isDarkMode ? ThemeColor().mode2 :ThemeColor().mode1,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -22,16 +23,17 @@ class Temperature extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
               decoration: BoxDecoration(
-                color: Colors.grey.shade800,
+               
+                color: ThemeColor().actual,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: const Row(
+              child:  Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(
                     Icons.settings,
                     size: 30,
-                    color: Colors.white,
+                    color:Get.isDarkMode ? Colors.white :Colors.black,
                   ),
                   SizedBox(width: 10),
                   Text(
@@ -39,7 +41,7 @@ class Temperature extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white),
+                         color:Get.isDarkMode ? Colors.white :Colors.black),
                   ),
                 ],
               ),
@@ -65,7 +67,7 @@ class Temperature extends StatelessWidget {
                                 _mqttController.temp1setlow.value <=
                                     _mqttController.temp1.value)
                             ? Colors.red
-                            : Colors.white,
+                            : Get.isDarkMode ? Colors.white :Colors.black,
                   ),
                 ),
               ),
@@ -85,7 +87,7 @@ class Temperature extends StatelessWidget {
                                 _mqttController.temp2setlow.value <=
                                     _mqttController.temp2.value)
                             ? Colors.red
-                            : Colors.white,
+                            : Get.isDarkMode ? Colors.white :Colors.black,
                   ),
                 ),
               )
@@ -109,7 +111,7 @@ class Temperature extends StatelessWidget {
                     getColorLogic: (pressure) => _mqttController.temp3.value <=
                             _mqttController.temp3sethigh.value
                         ? Colors.red
-                        : Colors.white,
+                        : Get.isDarkMode ? Colors.white :Colors.black,
                   ),
                 ),
               ),
@@ -125,7 +127,7 @@ class Temperature extends StatelessWidget {
                     getColorLogic: (pressure) => _mqttController.temp4.value >=
                             _mqttController.temp4setlow.value
                         ? Colors.red
-                        : Colors.white,
+                        : Get.isDarkMode ? Colors.white :Colors.black,
                   ),
                 ),
               )

@@ -5,11 +5,8 @@ import 'package:testappbita/Views/am_2/custom_widget/temperature/temperature.dar
 import 'package:testappbita/controller/mqtt_controller.dart';
 import 'package:testappbita/utils/dialogs.dart';
 import 'package:testappbita/utils/theme/theme.dart';
-import 'package:testappbita/utils/theme/theme_controller.dart';
-
 class TemperatureContainer extends StatelessWidget {
   final MqttController _mqttController = Get.find<MqttController>();
-  // final ThemeController themeController=Get.find<ThemeController>();
   TemperatureContainer({super.key});
   @override
   Widget build(BuildContext context) {
@@ -17,15 +14,7 @@ class TemperatureContainer extends StatelessWidget {
       width: Get.width * 0.95,
       height: Get.height * 0.24,
       decoration: BoxDecoration(
-        // gradient: LinearGradient( begin: Alignment.topLeft,
-        //                   end: Alignment.bottomRight,
-        //                   colors: [
-        //                     Colors.green,
-        //                     Colors.white,
-        //                   ], ),
         color:Get.isDarkMode ? ThemeColor().mode2Sec :ThemeColor().mode1Sec,
-        
-        
         borderRadius: BorderRadius.circular(Get.width * 0.03),
       ),
       child: Column(

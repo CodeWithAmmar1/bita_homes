@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import 'package:testappbita/controller/mqtt_controller.dart';
+import 'package:testappbita/utils/theme/theme.dart';
 
 class SupplySetting extends StatelessWidget {
   SupplySetting({
@@ -10,93 +11,86 @@ class SupplySetting extends StatelessWidget {
   final MqttController _mqttController = Get.find<MqttController>();
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Color(0xFF002B36), Color(0xFF005662)],
-            ),
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(Get.width * 0.08),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  "Supply Setting",
-                  style: TextStyle(
-                    fontSize: Get.width * 0.06,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    letterSpacing: 1.2,
-                  ),
-                ),
-                SizedBox(height: Get.height * 0.02),
-                SizedBox(height: Get.height * 0.02),
-                Expanded(
-                  child: SleekCircularSlider(
-                    appearance: CircularSliderAppearance(
-                      size: Get.width * 0.75,
-                      startAngle: 150,
-                      angleRange: 240,
-                      customWidths: CustomSliderWidths(
-                        progressBarWidth: Get.width * 0.015,
-                        trackWidth: Get.width * 0.015,
-                      ),
-                      customColors: CustomSliderColors(
-                        trackColor: Colors.white.withValues(alpha: 0.3),
-                        progressBarColors: [
-                          Colors.green,
-                          Colors.lightGreenAccent
-                        ],
-                        dotColor: Colors.white,
-                      ),
+    return Obx(
+      ()=> Scaffold(backgroundColor: Get.isDarkMode ? ThemeColor().mode2 :ThemeColor().mode1,
+        appBar: AppBar(
+        backgroundColor: ThemeColor().actual,
+        centerTitle: true,
+        title: Text("Supply Setting",style: TextStyle(color:  Get.isDarkMode ? ThemeColor().mode2 :ThemeColor().mode1,),),
+      
+    
+        automaticallyImplyLeading: false,
+       
+      ),
+        body: Padding(
+          padding: EdgeInsets.all(Get.width * 0.08),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+             
+              SizedBox(height: Get.height * 0.04),
+                   Expanded(
+                child: SleekCircularSlider(
+                  appearance: CircularSliderAppearance(
+                    size: Get.width * 0.75,
+                    startAngle: 150,
+                    angleRange: 240,
+                    customWidths: CustomSliderWidths(
+                      progressBarWidth: Get.width * 0.015,
+                      trackWidth: Get.width * 0.015,
                     ),
-                    min: 0,
-                    max: 100,
-                    initialValue: _mqttController.temp2.value.toDouble(),
-                    onChange: null,
-                    innerWidget: (double value) => Center(
+                    customColors: CustomSliderColors(
+                       trackColor: Colors.grey[500],
+                      progressBarColors: [
+                        Color(0xFF24C48E),
+                          Color(0xFF24C456)
+                      ],
+                      dotColor: Colors.white,
+                    ),
+                  ),
+                  min: 0,
+                  max: 100,
+                  initialValue: _mqttController.temp2.value.toDouble(),
+                  onChange: null,
+                  innerWidget: (double value) => Center(
+                    child: Center(
                       child: Container(
+                        width: Get.width*0.59,
+                         height: Get.height*0.59,
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: 0.3),
-                          borderRadius: BorderRadius.circular(10),
+                          shape: BoxShape.circle,
+                          color:  Get.isDarkMode ? ThemeColor().mode2Sec :ThemeColor().mode1Sec ,
+                          // borderRadius: BorderRadius.circular(10),
                           boxShadow: [
-                            BoxShadow(
-                              color: Colors.greenAccent.withValues(alpha: 0.8),
-                              blurRadius: 15,
-                              spreadRadius: 2,
-                            ),
+                        BoxShadow(
+                          color: Get.isDarkMode ? ThemeColor().actual.withValues(alpha: 0.8) : Colors.black26,
+                          blurRadius: 20,
+                          spreadRadius: 8,
+                        ),
                           ],
                         ),
-                        child: Text(
-                          "${_mqttController.temp2.value.toDouble().toStringAsFixed(0)}°C",
-                          style: TextStyle(
-                            fontSize: Get.width * 0.07,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            letterSpacing: 1.2,
-                            shadows: const [
-                              Shadow(
-                                blurRadius: 15,
-                                color: Colors.greenAccent,
-                              ),
-                            ],
+                        child: Center(
+                          child: Text(
+                            "${_mqttController.temp2.value.toDouble().toStringAsFixed(0)}°C",
+                            style: TextStyle( fontFamily: 'DS-Digital',
+                              fontSize: Get.width * 0.2,
+                                fontWeight: FontWeight.bold,
+                              color:Get.isDarkMode ? Colors.white :Colors.black,
+                              
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: Get.height * 0.03),
-                _buildSlider("Low Temperature", Colors.blue),
-                _buildSlider2("High Temperature", Colors.red),
-              ],
-            ),
+              ),
+             
+              SizedBox(height: Get.height * 0.03),
+              _buildSlider("Low Temperature",ThemeColor().actual),
+              _buildSlider2("High Temperature", Colors.red),
+            ],
           ),
         ),
       ),
@@ -117,7 +111,7 @@ class SupplySetting extends StatelessWidget {
                 style: TextStyle(
                   fontSize: Get.width * 0.045,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color:Get.isDarkMode ? Colors.white :Colors.black,
                   letterSpacing: 1.1,
                 ),
               ),
@@ -127,7 +121,7 @@ class SupplySetting extends StatelessWidget {
                   style: TextStyle(
                     fontSize: Get.width * 0.04,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                     color:Get.isDarkMode ? Colors.white :Colors.black,
                     letterSpacing: 1.1,
                   ),
                 ),
@@ -171,7 +165,7 @@ class SupplySetting extends StatelessWidget {
                 style: TextStyle(
                   fontSize: Get.width * 0.045,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color:Get.isDarkMode ? Colors.white :Colors.black,
                   letterSpacing: 1.1,
                 ),
               ),
@@ -181,7 +175,7 @@ class SupplySetting extends StatelessWidget {
                   style: TextStyle(
                     fontSize: Get.width * 0.04,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color:Get.isDarkMode ? Colors.white :Colors.black,
                     letterSpacing: 1.1,
                   ),
                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:testappbita/utils/theme/theme.dart';
 
 class TemperatureWidget extends StatelessWidget {
   final String title;
@@ -28,7 +29,7 @@ class TemperatureWidget extends StatelessWidget {
         height: Get.width * 0.4,
         width: Get.width * 0.45,
         decoration: BoxDecoration(
-          color: Colors.grey.shade800,
+          color: Get.isDarkMode ? ThemeColor().mode2Sec :ThemeColor().mode1Sec,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -38,10 +39,10 @@ class TemperatureWidget extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 title,
-                style: const TextStyle(
+                style:  TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                    color:Get.isDarkMode ? Colors.white :Colors.black),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -55,9 +56,9 @@ class TemperatureWidget extends StatelessWidget {
                   child: CircularProgressIndicator(
                     value: (double.parse(setpoint) / 100),
                     strokeWidth: 4,
-                    backgroundColor: Colors.white54,
+                    backgroundColor: Colors.grey[500],
                     valueColor:
-                        const AlwaysStoppedAnimation<Color>(Colors.greenAccent),
+                         AlwaysStoppedAnimation<Color>( Color(0xFF24C456)),
                   ),
                 ),
                 Text(
@@ -75,7 +76,7 @@ class TemperatureWidget extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: Colors.green.withValues(alpha: 0.8),
+                  color: ThemeColor().actual,
                 ),
                 width: Get.width * 1,
                 height: Get.height * 0.055,
@@ -87,24 +88,24 @@ class TemperatureWidget extends StatelessWidget {
                       if (low != null)
                         Row(
                           children: [
-                            const Text('Low: ',
-                                style: TextStyle(
+                             Text('Low: ',
+                                style: TextStyle(color:  Get.isDarkMode ? Colors.white :Colors.black,
                                     fontSize: 13, fontWeight: FontWeight.bold)),
                             Text(low!,
-                                style: const TextStyle(
-                                  fontSize: 13,
+                                style:  TextStyle(
+                                  fontSize: 13,color:  Get.isDarkMode ? Colors.white :Colors.black,
                                 )),
                           ],
                         ),
                       if (high != null)
                         Row(
                           children: [
-                            const Text('High: ',
+                             Text('High: ',
                                 style: TextStyle(
-                                    fontSize: 13, fontWeight: FontWeight.bold)),
+                                    fontSize: 13, fontWeight: FontWeight.bold,color:  Get.isDarkMode ? Colors.white :Colors.black,)),
                             Text(high!,
-                                style: const TextStyle(
-                                  fontSize: 13,
+                                style:  TextStyle(
+                                  fontSize: 13,color:  Get.isDarkMode ? Colors.white :Colors.black,
                                 )),
                           ],
                         ),

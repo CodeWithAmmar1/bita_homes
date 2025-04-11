@@ -17,7 +17,7 @@ class Dashboardam2 extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboardam2> {
-  // final ThemeController themeController=Get.find<ThemeController>();
+  final ThemeController themeController=Get.find<ThemeController>();
   final MqttController _mqttController = Get.put(MqttController());
   @override
   Widget build(BuildContext context) {
